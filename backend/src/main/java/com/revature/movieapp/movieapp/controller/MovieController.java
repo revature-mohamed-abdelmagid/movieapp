@@ -17,8 +17,6 @@ import com.revature.movieapp.movieapp.service.MovieService;
 
 import jakarta.validation.Valid;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 
 @RestController
