@@ -4,9 +4,7 @@ import com.revature.movieapp.movieapp.model.User;
 import com.revature.movieapp.movieapp.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import jakarta.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 

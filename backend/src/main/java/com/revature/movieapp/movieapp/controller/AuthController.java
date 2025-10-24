@@ -1,33 +1,50 @@
 package com.revature.movieapp.movieapp.controller;
 
+import com.revature.movieapp.movieapp.dto.JwtResponse;
+import com.revature.movieapp.movieapp.dto.LoginRequest;
+import com.revature.movieapp.movieapp.dto.MessageResponse;
 import com.revature.movieapp.movieapp.model.User;
+import com.revature.movieapp.movieapp.security.JwtUtil;
+import com.revature.movieapp.movieapp.service.TokenBlacklistService;
 import com.revature.movieapp.movieapp.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Authentication Controller
- * Handles user registration
- * Login is handled automatically by Spring Security via HTTP Basic Auth
+ * Authentication Controller - JWT Based
+ * Handles user registration, login, and logout
  */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final TokenBlacklistService tokenBlacklistService;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, 
+                         AuthenticationManager authenticationManager,
+                         JwtUtil jwtUtil,
+                         TokenBlacklistService tokenBlacklistService) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
     /**
-     * Register a new user
-     * This endpoint is PUBLIC (configured in SecurityConfig)
+     * Register a new user - PUBLIC ENDPOINT
      * 
      * Example request body:
      * {
@@ -46,7 +63,7 @@ public class AuthController {
             if (userService.getUserByUsername(user.getUsername()).isPresent()) {
                 return ResponseEntity
                         .badRequest()
-                        .body(createErrorResponse("Username already exists"));
+                        .body(new MessageResponse("Username already exists"));
             }
 
             // Create the user (password will be automatically encoded in UserService)
@@ -65,34 +82,95 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(createErrorResponse("Error during registration: " + e.getMessage()));
+                    .body(new MessageResponse("Error during registration: " + e.getMessage()));
         }
     }
 
     /**
-     * Login endpoint info
-     * This is just an informational endpoint
-     * Actual login is handled by Spring Security HTTP Basic Auth
+     * Login endpoint - PUBLIC ENDPOINT
+     * Authenticates user and returns JWT token
      * 
-     * To login, clients should send requests with Authorization header:
-     * Authorization: Basic <base64(username:password)>
+     * Example request body:
+     * {
+     *   "username": "john_doe",
+     *   "password": "mypassword123"
+     * }
+     * 
+     * @param loginRequest username and password
+     * @return JWT token and user information
      */
-    @GetMapping("/login-info")
-    public ResponseEntity<?> loginInfo() {
-        Map<String, String> info = new HashMap<>();
-        info.put("message", "Use HTTP Basic Authentication");
-        info.put("header", "Authorization: Basic <base64(username:password)>");
-        info.put("example", "For testing in Postman: Go to Authorization tab, select 'Basic Auth', enter username and password");
-        return ResponseEntity.ok(info);
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+        try {
+            // Authenticate user with username and password
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                    loginRequest.getUsername(),
+                    loginRequest.getPassword()
+                )
+            );
+
+            // Get user details
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            
+            // Generate JWT token
+            String jwt = jwtUtil.generateToken(userDetails);
+            
+            // Get full user information
+            User user = userService.getUserByUsername(loginRequest.getUsername())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            // Return JWT token and user info
+            JwtResponse response = new JwtResponse(
+                jwt,
+                user.getUsername(),
+                user.getEmail(),
+                user.getRoles()
+            );
+
+            return ResponseEntity.ok(response);
+
+        } catch (BadCredentialsException e) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageResponse("Invalid username or password"));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new MessageResponse("Error during login: " + e.getMessage()));
+        }
     }
 
     /**
-     * Helper method to create error response
+     * Logout endpoint - PUBLIC ENDPOINT
+     * Invalidates the JWT token by adding it to blacklist
+     * 
+     * Send token in Authorization header: Bearer <token>
+     * 
+     * @param authHeader Authorization header containing JWT token
+     * @return success message
      */
-    private Map<String, String> createErrorResponse(String message) {
-        Map<String, String> error = new HashMap<>();
-        error.put("error", message);
-        return error;
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
+        try {
+            // Extract token from "Bearer <token>"
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                
+                // Add token to blacklist
+                tokenBlacklistService.blacklistToken(token);
+                
+                return ResponseEntity.ok(new MessageResponse("Logged out successfully"));
+            } else {
+                return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse("Invalid Authorization header"));
+            }
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new MessageResponse("Error during logout: " + e.getMessage()));
+        }
     }
 }
 
