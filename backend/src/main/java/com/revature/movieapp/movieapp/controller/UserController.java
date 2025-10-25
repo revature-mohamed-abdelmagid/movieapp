@@ -2,27 +2,27 @@ package com.revature.movieapp.movieapp.controller;
 
 import com.revature.movieapp.movieapp.model.User;
 import com.revature.movieapp.movieapp.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import jakarta.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 
 
 
 /**
- * Basic CRUD REST controller for User.
- * Assumes UserService provides:
- *  - List<User> getAllUsers()
- *  - java.util.Optional<User> getUserById(Long id)
- *  - User createUser(User user)
- *  - java.util.Optional<User> updateUser(Long id, User user)
- *  - boolean deleteUser(Long id)
- *
- * Adjust service method names/signatures to match your actual service implementation if needed.
+ * User Management Controller - ADMIN ONLY
+ * 
+ * This controller is for administrative user management.
+ * All endpoints require ADMIN role (configured in SecurityConfig).
+ * 
+ * For public user registration, use AuthController (/api/auth/register)
+ * 
+ * Use Cases:
+ * - View all users (admin dashboard)
+ * - View specific user details
+ * - Update user information (support/moderation)
+ * - Delete problematic users (moderation)
  */
 @RestController
 @RequestMapping("/api/users")
@@ -30,19 +30,29 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    // GET /api/users
+    /**
+     * Get all users - ADMIN ONLY
+     * Useful for admin dashboard or user management interface
+     * 
+     * @return List of all users in the system
+     */
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
-    // GET /api/users/{id}
+    /**
+     * Get user by ID - ADMIN ONLY
+     * Useful for viewing specific user details
+     * 
+     * @param id the user ID
+     * @return User details if found
+     */
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
@@ -50,18 +60,21 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // POST /api/users
-    @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user, UriComponentsBuilder uriBuilder) {
-        User created = userService.createUser(user);
-        URI location = uriBuilder.path("/api/users/{id}").buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(location).body(created);
-    }
-
-    // PUT /api/users/{id}
+    /**
+     * Update user - ADMIN ONLY
+     * Useful for:
+     * - User support (fixing user data)
+     * - Adding/removing roles
+     * - Updating user information
+     * 
+     * NOTE: Password will be re-encrypted if changed
+     * 
+     * @param id the user ID to update
+     * @param user the updated user data
+     * @return Updated user
+     */
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
-        // Check existence first (service exposes getUserById)
         return userService.getUserById(id)
                 .map(existing -> {
                     User updated = userService.updateUser(id, user);
@@ -70,7 +83,16 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // DELETE /api/users/{id}
+    /**
+     * Delete user - ADMIN ONLY
+     * Useful for:
+     * - Removing spam accounts
+     * - User moderation
+     * - GDPR user deletion requests
+     * 
+     * @param id the user ID to delete
+     * @return 204 No Content if successful
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         return userService.getUserById(id)
