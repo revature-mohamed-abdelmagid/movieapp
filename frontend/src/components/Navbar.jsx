@@ -9,7 +9,7 @@ const Navbar = () => {
         <FaFilm className="logo-icon" />
         <span>CineVerse</span>
         </div>
-        <input type="text" placeholder="Search movies..." className="search-input" />
+        {/* <input type="text" placeholder="Search movies..." className="search-input" /> */}
         <div className="nav-links">
             <a href="#browse">Browse Movies</a>
             <button className="sign-in">Sign In</button>

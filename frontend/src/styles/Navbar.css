@@ -6,6 +6,9 @@
     /* what does padding 1rem 2rem do? It sets the vertical padding to 1rem and the horizontal padding to 2rem */
     padding: 1rem 2rem; 
     border-bottom: 1px solid #333;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%); 
+    
 }
 
 

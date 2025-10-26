@@ -1,0 +1,61 @@
+.featured {
+  padding: 2rem;
+  background-color: #121212;
+}
+
+.featured-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.featured-header h2 {
+  font-size: 2rem;
+}
+
+.featured-header a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.movie-card {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.movie-card img {
+  width: 100%;
+  /* height: auto; */
+  
+    object-fit: cover;
+    height: 300px;
+  
+}
+
+.movie-card h4 {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.movie-card p {
+  padding: 0 0.5rem 0.5rem;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.rating {
+  color: #ffd700;
+}
+
+.genres {
+  font-style: italic;
+}
