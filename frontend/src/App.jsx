@@ -1,18 +1,15 @@
 // src/App.jsx
 import React from 'react';
 import MovieList from './components/MovieList';
+import Navbar from './components/Navbar';
 import './styles/App.css';
+import Hero from './components/Hero';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Movie Review App</h1>
-        <p>Discover, rate, and review your favorite movies</p>
-      </header>
-      <main>
-        <MovieList />
-      </main>
+      <Navbar />
+        <Hero />
     </div>
   );
 }

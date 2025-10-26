@@ -1,0 +1,55 @@
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #121212;
+    /* what does padding 1rem 2rem do? It sets the vertical padding to 1rem and the horizontal padding to 2rem */
+    padding: 1rem 2rem; 
+    border-bottom: 1px solid #333;
+}
+
+
+
+.navbar-logo{
+    display: flex;
+    align-items: center;
+    color: #ffd700;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+
+.logo-icon {
+    margin-right: 0.5rem;
+}
+
+.search-input{
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.nav-links{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.nav-links a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.sign-in {
+    background-color: #ffd700;
+    color: #000;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer; 
+}
+
