@@ -52,6 +52,6 @@ public class Movie {
     private String posterUrl;
 
     @Min(value = 0, message = "Average rating cannot be less than 0")
-    @Max(value = 10, message = "Average rating cannot exceed 10")
+    @Max(value = 5, message = "Average rating cannot exceed 5")
     private Double avgRating;
 }

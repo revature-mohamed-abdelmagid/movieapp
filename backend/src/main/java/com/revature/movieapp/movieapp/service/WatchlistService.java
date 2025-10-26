@@ -151,9 +151,9 @@ public class WatchlistService {
         List<WatchlistItem> items = watchlistItemRepository.findByWatchlistId(watchlistId);
         return items.stream()
                 .map(item -> movieRepository.findById(item.getMovieId()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .filter(Optional::isPresent) //what does this line do? It filters out any Optional objects that are empty, ensuring only present values are processed.
+                .map(Optional::get) // Retrieves the Movie object from the Optional
                 .toList();
     }
-    
+
 }
