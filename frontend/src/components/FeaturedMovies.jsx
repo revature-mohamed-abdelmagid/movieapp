@@ -1,75 +1,147 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { FaStar, FaCalendar, FaClock, FaExclamationTriangle } from 'react-icons/fa';
+import { movieAPI } from '../../services/api.js';
 import '../styles/FeaturedMovies.css';
-// Sample data (replace with API fetch later if needed)
-
-const movies = [
-  {
-    title: 'The Shawshank Redemption',
-    year: 1994,
-    rating: 9.3,
-    genres: ['Drama'],
-    poster: 'https://images.unsplash.com/photo-1604161546756-751af8e7912c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=735'
-  },
-  {
-    title: 'The Dark Knight',
-    year: 2008,
-    rating: 9,
-    genres: ['Action', 'Crime'],
-    poster: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=735'
-  },
-  // Add more for Inception, Pulp Fiction, The Matrix, Forrest Gump
-  {
-    title: 'Inception',
-    year: 2010,
-    rating: 8.8,
-    genres: ['Action', 'Sci-Fi'],
-    poster: 'https://via.placeholder.com/200x300?text=Inception'
-  },
-  {
-    title: 'Pulp Fiction',
-    year: 1994,
-    rating: 8.9,
-    genres: ['Crime', 'Drama'],
-    poster: 'https://via.placeholder.com/200x300?text=Pulp+Fiction'
-  },
-  {
-    title: 'The Matrix',
-    year: 1999,
-    rating: 8.7,
-    genres: ['Action', 'Sci-Fi'],
-    poster: 'https://via.placeholder.com/200x300?text=Matrix'
-  },
-  {
-    title: 'Forrest Gump',
-    year: 1994,
-    rating: 8.8,
-    genres: ['Drama', 'Romance'],
-    poster: 'https://via.placeholder.com/200x300?text=Forrest+Gump'
-  }
-];
 
 const FeaturedMovies = () => {
-    return  (
+    const [movies, setMovies] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetchMovies();
+    }, []);
+
+    const fetchMovies = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            console.log('Fetching movies with genres from API...');
+            
+            const response = await movieAPI.getAllMoviesWithGenres();
+            console.log('Movies with genres fetched successfully:', response.data);
+            
+            // Limit to first 6 movies for featured section
+            setMovies(response.data.slice(0, 6));
+        } catch (err) {
+            console.error('Error fetching movies:', err);
+            setError('Failed to load movies. Please try again later.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const getDisplayPoster = (movie) => {
+        // Use the movie's poster URL if available, otherwise use a placeholder
+        return movie.posterUrl || `https://via.placeholder.com/200x300/4a5568/ffffff?text=${encodeURIComponent(movie.title)}`;
+    };
+
+    const formatDuration = (minutes) => {
+        if (!minutes) return '';
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+    };
+
+    const renderMovieCard = (movie) => (
+        <div key={movie.movieId} className='movie-card'>
+            <div className='movie-poster'>
+                <img 
+                    src={getDisplayPoster(movie)} 
+                    alt={movie.title}
+                    onError={(e) => {
+                        e.target.src = `https://via.placeholder.com/200x300/4a5568/ffffff?text=${encodeURIComponent(movie.title)}`;
+                    }}
+                />
+            </div>
+            <div className='movie-info'>
+                <h4 className='movie-title'>{movie.title}</h4>
+                <div className='movie-details'>
+                    <span className='movie-year'>
+                        <FaCalendar className='icon' />
+                        {movie.releaseYear}
+                    </span>
+                    {movie.avgRating && (
+                    <div className='movie-rating'>
+                        <FaStar className='star-icon' />
+                        <span>{movie.avgRating.toFixed(1)}</span>
+                    </div>
+                )}
+                </div>
+                
+                {movie.description && (
+                    <p className='movie-description'>
+                        {movie.description.length > 100 
+                            ? `${movie.description.substring(0, 100)}...` 
+                            : movie.description
+                        }
+                    </p>
+                )}
+                
+                {console.log(movie)}
+                {movie.genres && movie.genres.length > 0 && (
+                    <div className='movie-genres'>
+                        {movie.genres.map((genre, index) => (
+                            <span key={index} className='genre-tag'>
+                                {genre}
+                            </span>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+
+    if (loading) {
+        return (
+            <section className='featured'>
+                <div className='featured-header'>
+                    <h2>Featured Movies</h2>
+                </div>
+                <div className='loading-container'>
+                    <div className='loading-spinner'></div>
+                    <p>Loading movies...</p>
+                </div>
+            </section>
+        );
+    }
+
+    if (error) {
+        return (
+            <section className='featured'>
+                <div className='featured-header'>
+                    <h2>Featured Movies</h2>
+                </div>
+                <div className='error-container'>
+                    <FaExclamationTriangle className='error-icon' />
+                    <p className='error-message'>{error}</p>
+                    <button onClick={fetchMovies} className='retry-button'>
+                        Try Again
+                    </button>
+                </div>
+            </section>
+        );
+    }
+
+    return (
         <section className='featured'>
             <div className='featured-header'>
                 <h2>Featured Movies</h2>
-                <a href="#view-all">View All</a>
+                <a href="#view-all">View All ({movies.length})</a>
             </div>
-            <div className='movie-grid'>
-                {/* Movie cards would go here */}
-                {movies.map((movie, index) =>(
-                <div key={index} className='movie-card'>
-                    <img src={movie.poster} alt={movie.title} />
-                    <h4>{movie.title}</h4>
-                    <p>{movie.year} <span className='rating'>★ {movie.rating}  </span></p>
-                    <p className='genres'>{movie.genres.join(' ')}</p>
+            
+            {movies.length === 0 ? (
+                <div className='no-movies'>
+                    <p>No movies available at the moment.</p>
+                    <p>Check back later for new releases!</p>
                 </div>
-                ))}
-            </div>
-
+            ) : (
+                <div className='movie-grid'>
+                    {movies.map(renderMovieCard)}
+                </div>
+            )}
         </section>
     );
 };
-
 
 export default FeaturedMovies;
