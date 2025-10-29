@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.revature.movieapp.movieapp.dto.MovieWithGenresDTO;
 import com.revature.movieapp.movieapp.model.Movie;
 import com.revature.movieapp.movieapp.service.MovieService;
 
@@ -31,6 +32,12 @@ private final MovieService movieService;
     @GetMapping("/movies")
     public ResponseEntity<List<Movie>> getAllMovies() {
         List<Movie> movies = movieService.getAllMovies();
+        return ResponseEntity.ok(movies);
+    }
+
+    @GetMapping("/movies/with-genres")
+    public ResponseEntity<List<MovieWithGenresDTO>> getAllMoviesWithGenres() {
+        List<MovieWithGenresDTO> movies = movieService.getAllMoviesWithGenres();
         return ResponseEntity.ok(movies);
     }
 
