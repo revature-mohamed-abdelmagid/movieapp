@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaStar, FaCalendar, FaClock, FaExclamationTriangle } from 'react-icons/fa';
 import { movieAPI } from '../../services/api.js';
 import '../styles/FeaturedMovies.css';
 
 const FeaturedMovies = () => {
+    const navigate = useNavigate();
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -43,8 +45,16 @@ const FeaturedMovies = () => {
         return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
     };
 
+    const handleMovieClick = (movieId) => {
+        navigate(`/movie/${movieId}`);
+    };
+
     const renderMovieCard = (movie) => (
-        <div key={movie.movieId} className='movie-card'>
+        <div 
+            key={movie.movieId} 
+            className='movie-card clickable' 
+            onClick={() => handleMovieClick(movie.movieId)}
+        >
             <div className='movie-poster'>
                 <img 
                     src={getDisplayPoster(movie)} 
