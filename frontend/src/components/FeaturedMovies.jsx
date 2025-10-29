@@ -43,15 +43,27 @@ const FeaturedMovies = () => {
         return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
     };
 
+    const handleImageError = (e, movie) => {
+        // Check if we've already tried the fallback to prevent infinite loop
+        if (e.target.dataset.fallbackAttempted === 'true') {
+            // If fallback already failed, remove the src to stop further requests
+            e.target.removeAttribute('src');
+            return;
+        }
+        
+        // Mark that we've attempted the fallback
+        e.target.dataset.fallbackAttempted = 'true';
+        // Set the placeholder image
+        e.target.src = `https://via.placeholder.com/200x300/4a5568/ffffff?text=${encodeURIComponent(movie.title)}`;
+    };
+
     const renderMovieCard = (movie) => (
         <div key={movie.movieId} className='movie-card'>
             <div className='movie-poster'>
                 <img 
                     src={getDisplayPoster(movie)} 
                     alt={movie.title}
-                    onError={(e) => {
-                        e.target.src = `https://via.placeholder.com/200x300/4a5568/ffffff?text=${encodeURIComponent(movie.title)}`;
-                    }}
+                    onError={(e) => handleImageError(e, movie)}
                 />
             </div>
             <div className='movie-info'>

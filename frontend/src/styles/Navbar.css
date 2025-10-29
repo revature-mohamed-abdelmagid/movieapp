@@ -3,12 +3,12 @@
     justify-content: space-between;
     align-items: center;
     background-color: #121212;
-    /* what does padding 1rem 2rem do? It sets the vertical padding to 1rem and the horizontal padding to 2rem */
-    padding: 1rem 2rem; 
+    padding: 1rem 0;
     border-bottom: 1px solid #333;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%); 
-    
+    max-width: 1460px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 
@@ -19,6 +19,7 @@
     color: #ffd700;
     font-size: 1.5rem;
     font-weight: bold;
+    text-decoration: none;
 }
 
 
@@ -53,6 +54,55 @@
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    cursor: pointer; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sign-in:hover {
+    background-color: #ffed4e;
+    transform: translateY(-2px);
+}
+
+/* User Menu Styles */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #fff;
+    padding: 0.5rem 0.75rem;
+    background-color: #2a2a2a;
+    border-radius: 4px;
+}
+
+.user-icon {
+    color: #ffd700;
+}
+
+.username {
+    font-weight: 500;
+}
+
+.sign-out {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.sign-out:hover {
+    background-color: #444;
+    border-color: #ffd700;
 }
 
