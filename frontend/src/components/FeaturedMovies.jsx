@@ -142,6 +142,7 @@ const FeaturedMovies = () => {
             
             {movies.length === 0 ? (
                 <div className='no-movies'>
+                    {console.log(movies)}
                     <p>No movies available at the moment.</p>
                     <p>Check back later for new releases!</p>
                 </div>

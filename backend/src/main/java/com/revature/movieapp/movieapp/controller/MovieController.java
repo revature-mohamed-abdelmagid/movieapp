@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.revature.movieapp.movieapp.dto.MovieFullDetailsDTO;
 import com.revature.movieapp.movieapp.dto.MovieWithGenresDTO;
 import com.revature.movieapp.movieapp.model.Movie;
 import com.revature.movieapp.movieapp.service.MovieService;
@@ -68,5 +69,25 @@ private final MovieService movieService;
         return ResponseEntity.noContent().build();
     }
 
-    
+    // Get movie with full details including genres, cast, and crew
+    @GetMapping("/movies/full-details/{id}")
+    public ResponseEntity<MovieFullDetailsDTO> getMovieFullDetails(@PathVariable Long id) {
+        try {
+            MovieFullDetailsDTO movieDetails = movieService.getMovieFullDetails(id);
+            return ResponseEntity.ok(movieDetails);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Get all movies with full details
+    @GetMapping("/movies/full-details")
+    public ResponseEntity<List<MovieFullDetailsDTO>> getAllMoviesWithFullDetails() {
+        try {
+            List<MovieFullDetailsDTO> moviesDetails = movieService.getAllMoviesWithFullDetails();
+            return ResponseEntity.ok(moviesDetails);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

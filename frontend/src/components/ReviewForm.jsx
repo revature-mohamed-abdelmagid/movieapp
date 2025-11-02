@@ -1,62 +1,37 @@
-// src/components/ReviewForm.jsx
 import React, { useState } from 'react';
-import { reviewAPI } from '../services/api';
+import { FaStar } from 'react-icons/fa';
 
-const ReviewForm = ({ movieId, onReviewAdded }) => {
+const ReviewForm = () => {
   const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState('');
-  const [submitting, setSubmitting] = useState(false);
+  const [reviewText, setReviewText] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitting(true);
-    
-    try {
-      await reviewAPI.createReview({
-        movieId,
-        rating,
-        comment,
-        userId: 1 // In real app, this would come from auth
-      });
-      
-      setRating(0);
-      setComment('');
-      onReviewAdded?.();
-    } catch (error) {
-      console.error('Error submitting review:', error);
-    } finally {
-      setSubmitting(false);
-    }
+    // TODO: Submit to backend/API
+    console.log({ rating, reviewText });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="review-form">
-      <h3>Add Your Review</h3>
-      <div className="rating-input">
-        <label>Rating:</label>
-        <select 
-          value={rating} 
-          onChange={(e) => setRating(Number(e.target.value))}
-          required
-        >
-          <option value={0}>Select rating</option>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-            <option key={num} value={num}>{num}</option>
-          ))}
-        </select>
+    <form className="review-form" onSubmit={handleSubmit}>
+      <h3>Write a Review</h3>
+      <div className="rating mb-4 mt-4">
+        Your Rating
+        {[...Array(5)].map((_, index) => (
+          <FaStar
+            key={index}
+            className="star"
+            color={index < rating ? '#ffc107' : '#e4e5e9'}
+            onClick={() => setRating(index + 1)}
+          />
+        ))}
       </div>
-      <div className="comment-input">
-        <label>Comment:</label>
-        <textarea 
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          rows="4"
-          required
-        />
-      </div>
-      <button type="submit" disabled={submitting}>
-        {submitting ? 'Submitting...' : 'Submit Review'}
-      </button>
+    <textarea
+    className="w-full h-20 bg-[#333] text-white border-none p-2 rounded mb-4 placeholder-gray-500"
+    placeholder="Share your thoughts about this movie..."
+    value={reviewText}
+    onChange={(e) => setReviewText(e.target.value)}
+  />
+  <button type="submit" className="bg-[#ffc107] text-black border-none py-2 px-4 cursor-pointer rounded">Submit Review</button>
     </form>
   );
 };

@@ -109,6 +109,12 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/movies/**").authenticated() // Create movies
                 .requestMatchers(HttpMethod.PUT, "/movies/**").authenticated() // Update movies
                 
+                // Reviews endpoints permit all for viewing, authenticated for creating/updating/deleting
+                .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll() // View reviews
+                .requestMatchers(HttpMethod.POST, "/api/reviews/**").authenticated() // Create reviews
+                .requestMatchers(HttpMethod.PUT, "/api/reviews/**").authenticated() // Update reviews
+                .requestMatchers(HttpMethod.DELETE, "/api/reviews/**").authenticated() // Delete reviews
+
                 // ALL OTHER ENDPOINTS - Require authentication
                 .anyRequest().authenticated()
             )
