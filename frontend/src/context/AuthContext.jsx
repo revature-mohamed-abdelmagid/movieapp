@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
             // Store token and user info
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('user', JSON.stringify({
+                id: response.data.id,
                 username: response.data.username,
                 email: response.data.email,
                 roles: response.data.roles
@@ -37,6 +38,7 @@ export const AuthProvider = ({ children }) => {
             
             setToken(response.data.token);
             setUser({
+                id: response.data.id,
                 username: response.data.username,
                 email: response.data.email,
                 roles: response.data.roles

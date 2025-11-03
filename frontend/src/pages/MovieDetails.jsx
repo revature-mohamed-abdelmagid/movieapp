@@ -18,25 +18,31 @@ const MovieDetails = () => {
   // -------------------------------------------------
   //  FETCH MOVIE BY ID
   // -------------------------------------------------
+  const fetchMovie = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await movieAPI.getMovieFullDetails(id); // <-- your API call
+      setMovie(response.data);
+      console.log(response.data);         // <-- expect { movieId, title, ... }
+    } catch (err) {
+      console.error('Failed to load movie', err);
+      setError('Could not load movie details. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await movieAPI.getMovieFullDetails(id); // <-- your API call
-        setMovie(response.data);
-        console.log(response.data);         // <-- expect { movieId, title, ... }
-      } catch (err) {
-        console.error('Failed to load movie', err);
-        setError('Could not load movie details. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (id) fetchMovie();
   }, [id]);
+
+  // Function to refresh movie data after a review is submitted
+  const handleReviewSubmitted = () => {
+    console.log('Review submitted, refreshing movie data...');
+    fetchMovie();
+  };
 
   // -------------------------------------------------
   //  RENDER STATES
@@ -76,8 +82,10 @@ const MovieDetails = () => {
 
         <section className="reviews">
           <h2>Reviews</h2>
-          <ReviewForm movieId={movie.movieId} />
-          {/* Uncomment when you have a list endpoint */}
+          <ReviewForm 
+            movieId={movie.movieId} 
+            onReviewSubmitted={handleReviewSubmitted}
+          />
           <ReviewsList movie={movie} />
         </section>
       </main>

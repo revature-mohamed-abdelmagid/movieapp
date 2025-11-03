@@ -75,10 +75,14 @@ export const authAPI = {
 
 // Review API calls
 export const reviewAPI = {
-  getReviewsByMovie: (movieId) => api.get(`/movies/${movieId}/reviews`),
-  createReview: (reviewData) => api.post('/reviews', reviewData),
-  updateReview: (id, reviewData) => api.put(`/reviews/${id}`, reviewData),
-  deleteReview: (id) => api.delete(`/reviews/${id}`),
+  getAllReviews: () => api.get('/api/reviews'),
+  getReviewById: (id) => api.get(`/api/reviews/${id}`),
+  getReviewsByMovie: (movieId) => api.get(`/api/reviews/movie/${movieId}`),
+  getReviewsByUser: (userId) => api.get(`/api/reviews/user/${userId}`),
+  createReview: (reviewData) => api.post('/api/reviews', reviewData),
+  updateReview: (id, reviewData) => api.put(`/api/reviews/${id}`, reviewData),
+  patchReview: (id, reviewData) => api.patch(`/api/reviews/${id}`, reviewData),
+  deleteReview: (id) => api.delete(`/api/reviews/${id}`),
 };
 
 // Person API calls (for cast/crew management)
