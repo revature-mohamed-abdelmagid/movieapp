@@ -1,21 +1,51 @@
 import React from "react";
-import { FaFilm } from "react-icons/fa"; // how to install react-icons? -- npm install react-icons
+import { Link, useNavigate } from "react-router-dom";
+import { FaFilm, FaUserCog } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
 import '../styles/Navbar.css';
 
 const Navbar = () => {
+  const { user, isAdmin, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
     <nav className="navbar">
-      <div className="navbar-logo">
+      <Link to="/" className="navbar-logo">
         <FaFilm className="logo-icon" />
         <span>CineVerse</span>
-        </div>
-        {/* <input type="text" placeholder="Search movies..." className="search-input" /> */}
-        <div className="nav-links">
-            <a href="#browse">Browse Movies</a>
-            <button className="sign-in">Sign In</button>
-        </div>
-        </nav>
-    );
-    }
+      </Link>
+      <div className="nav-links">
+        <Link to="/" className="nav-link">Browse Movies</Link>
+        {isAdmin() && (
+          <Link to="/admin" className="nav-link admin-link">
+            <FaUserCog className="admin-icon" />
+            Admin Panel
+          </Link>
+        )}
+        {user ? (
+          <div className="user-menu">
+            <span className="username">{user.username}</span>
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        ) : (
+          <button className="sign-in" onClick={handleLogin}>
+            Sign In
+          </button>
+        )}
+      </div>
+    </nav>
+  );
+}
 
 export default Navbar;

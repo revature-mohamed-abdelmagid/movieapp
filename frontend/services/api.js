@@ -37,7 +37,28 @@ export const movieAPI = {
   getMovieById: (id) => api.get(`/movies/${id}`),
   createMovie: (movieData) => api.post('/movies', movieData),
   updateMovie: (id, movieData) => api.put(`/movies/${id}`, movieData),
-  deleteMovie: (id) => api.delete(`/movies/${id}`),
+  deleteMovie: async (movieId) => {
+    const response = await axiosInstance.delete(`/movies/${movieId}`);
+    return response;
+  },
+
+  updateMovie: async (movieId, movieData) => {
+    const response = await axiosInstance.put(`/movies/${movieId}`, movieData);
+    return response;
+  },
+
+  login: async (credentials) => {
+    const response = await axiosInstance.post('/auth/login', credentials);
+    if (response.data.token) {
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+    }
+    return response;
+  },
+
+  getCurrentUser: async () => {
+    const response = await axiosInstance.get('/auth/me');
+    return response;
+  }
 };
 
 // Auth API calls

@@ -1,26 +1,45 @@
-// src/App.jsx
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MovieList from './components/MovieList';
 import MovieCard from './components/MovieCard';
 import FeaturedMovies from './components/FeaturedMovies';
 import Navbar from './components/Navbar';
-import './styles/App.css';
 import Hero from './components/Hero';
+import AdminDashboard from './components/AdminDashboard';
+import Login from './components/Login';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
+import './styles/App.css';
 
 function App() {
   return (
-    <div className="App">
-      <div className="hero-wrapper">
-      <div className="container">
-      <Navbar />
-        <Hero />
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/admin" element={
+              <ProtectedRoute requireAdmin={true}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/" element={
+              <>
+                <div className="hero-wrapper">
+                  <div className="container">
+                    <Navbar />
+                    <Hero />
+                  </div>
+                </div>
+                <div className="container">
+                  <FeaturedMovies />
+                </div>
+              </>
+            } />
+          </Routes>
         </div>
-        </div>
-        <div className="container">
-        <FeaturedMovies />
-        </div>
-    </div>
-    
+      </Router>
+    </AuthProvider>
   );
 }
 
