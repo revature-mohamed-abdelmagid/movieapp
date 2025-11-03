@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaFilm, FaUser, FaSignOutAlt } from "react-icons/fa";
+import { FaFilm, FaUser, FaSignOutAlt, FaPlusCircle } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext';
 import '../styles/Navbar.css';
 
@@ -12,6 +12,9 @@ const Navbar = () => {
     await logout();
     navigate('/');
   };
+
+  // Check if user is admin
+  const isAdmin = user?.roles?.includes('ROLE_ADMIN');
 
   return (
     <nav className="navbar">
@@ -27,6 +30,14 @@ const Navbar = () => {
         
         {isAuthenticated ? (
           <div className="user-menu">
+            {isAdmin && (
+              <Link to="/add-movie" className="add-movie-link">
+                <button className="btn-add-movie">
+                  <FaPlusCircle />
+                  Add Movie
+                </button>
+              </Link>
+            )}
             <div className="user-info">
               <FaUser className="user-icon" />
               <span className="username">{user?.username}</span>

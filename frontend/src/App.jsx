@@ -7,6 +7,7 @@ import Home from './components/Home';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import MovieDetails from './pages/MovieDetails';
+import AddMovie from './pages/AddMovie';
 import './styles/App.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/movie/:id" element={<MovieDetails />} />
+            <Route path="/add-movie" element={<AddMovie />} />
           </Routes>
         </div>
       </Router>

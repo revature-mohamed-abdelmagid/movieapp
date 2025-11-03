@@ -1,7 +1,6 @@
 // src/pages/MovieDetails.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import MovieInfo from '../components/MovieInfo';
 import ReviewForm from '../components/ReviewForm';
 import ReviewsList from '../components/ReviewsList';
@@ -45,7 +44,6 @@ const MovieDetails = () => {
   if (loading) {
     return (
       <div className="movie-details-page">
-        <Navbar />
         <main className="loading">
           <div className="spinner"></div>
           <p>Loading movie details…</p>
@@ -57,7 +55,6 @@ const MovieDetails = () => {
   if (error || !movie) {
     return (
       <div className="movie-details-page">
-        <Navbar />
         <main className="error">
           <p>{error || 'Movie not found.'}</p>
           <button onClick={() => navigate(-1)} className="btn-back">
@@ -73,7 +70,6 @@ const MovieDetails = () => {
   // -------------------------------------------------
   return (
     <div className="movie-details-page">
-      <Navbar />
       <main>
         {/* Pass the *real* movie object to your reusable component */}
         <MovieInfo movie={movie} />

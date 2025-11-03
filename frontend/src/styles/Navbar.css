@@ -106,3 +106,27 @@
     border-color: #ffd700;
 }
 
+/* Add Movie Button (Admin Only) */
+.add-movie-link {
+    text-decoration: none;
+}
+
+.btn-add-movie {
+    background-color: #ffd700;
+    color: #000;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-add-movie:hover {
+    background-color: #ffed4e;
+    transform: translateY(-2px);
+}
+

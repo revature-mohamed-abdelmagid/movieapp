@@ -10,10 +10,27 @@ const api = axios.create({
   },
 });
 
-// Add request interceptor for logging
+// Add request interceptor for logging and adding JWT token
 api.interceptors.request.use(
   (config) => {
     console.log(`Making ${config.method?.toUpperCase()} request to: ${config.url}`);
+    
+    // Add JWT token to request headers if it exists
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+      console.log('✓ JWT token attached to request');
+    } else {
+      console.warn('⚠ No JWT token found in localStorage');
+    }
+    
+    // Debug: Log user info from localStorage
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      console.log('User roles:', user.roles);
+    }
+    
     return config;
   },
   (error) => {
@@ -62,6 +79,29 @@ export const reviewAPI = {
   createReview: (reviewData) => api.post('/reviews', reviewData),
   updateReview: (id, reviewData) => api.put(`/reviews/${id}`, reviewData),
   deleteReview: (id) => api.delete(`/reviews/${id}`),
+};
+
+// Person API calls (for cast/crew management)
+export const personAPI = {
+  getAllPersons: () => api.get('/api/persons'),
+  searchPersons: (name) => api.get('/api/persons/search', { params: { name } }),
+  getPersonById: (id) => api.get(`/api/persons/${id}`),
+  createPerson: (personData) => api.post('/api/persons', personData),
+  updatePerson: (id, personData) => api.put(`/api/persons/${id}`, personData),
+  deletePerson: (id) => api.delete(`/api/persons/${id}`),
+};
+
+// Movie Cast/Crew API calls
+export const movieCastAPI = {
+  addCastToMovie: (movieId, castData) => api.post(`/api/movies/${movieId}/cast`, castData),
+  addMultipleCastToMovie: (movieId, castList) => api.post(`/api/movies/${movieId}/cast/bulk`, castList),
+  getCastForMovie: (movieId) => api.get(`/api/movies/${movieId}/cast`),
+  removeCastFromMovie: (participationId) => api.delete(`/api/movies/cast/${participationId}`),
+};
+
+// Movie Role API calls
+export const roleAPI = {
+  getAllRoles: () => api.get('/api/roles'),
 };
 
 export default api;
