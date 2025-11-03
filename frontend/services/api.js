@@ -35,6 +35,13 @@ export const movieAPI = {
   getAllMovies: () => api.get('/movies'),
   getAllMoviesWithGenres: () => api.get('/movies/with-genres'),
   getMovieById: (id) => api.get(`/movies/${id}`),
+  
+  // Get movie with full details (genres, cast, crew with their information)
+  getMovieFullDetails: (id) => api.get(`/movies/full-details/${id}`),
+  
+  // Get all movies with full details
+  getAllMoviesWithFullDetails: () => api.get('/movies/full-details'),
+  
   createMovie: (movieData) => api.post('/movies', movieData),
   updateMovie: (id, movieData) => api.put(`/movies/${id}`, movieData),
   deleteMovie: (id) => api.delete(`/movies/${id}`),

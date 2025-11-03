@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 /**
@@ -51,7 +52,7 @@ public class Review {
 	@Min(1)
 	@Max(5)
 	@Column(nullable = false)
-	private Integer rating;
+	private Long rating;
 
 	/** Free-text review content. */
 	@Size(max = 5000)

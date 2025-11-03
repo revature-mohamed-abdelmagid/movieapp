@@ -47,8 +47,6 @@ public class Movie {
     @Size(max = 100, message = "Country cannot exceed 100 characters")
     private String country;
 
-    @Pattern(regexp = "^(https?://)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$|^$", 
-             message = "Poster URL must be a valid URL or empty")
     private String posterUrl;
 
     @Min(value = 0, message = "Average rating cannot be less than 0")

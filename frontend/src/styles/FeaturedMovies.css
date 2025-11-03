@@ -129,9 +129,18 @@
   width: 100%; /* Ensures it fills the grid cell but respects max-width */
 }
 
+.movie-card.clickable {
+  cursor: pointer;
+}
+
 .movie-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.movie-card.clickable:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 35px rgba(100, 181, 246, 0.2);
 }
 
 .movie-poster {
