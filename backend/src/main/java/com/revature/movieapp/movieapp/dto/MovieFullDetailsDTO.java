@@ -29,6 +29,7 @@ public class MovieFullDetailsDTO {
     private String language;
     private String country;
     private String posterUrl;
+    private String trailerUrl;
     private Double avgRating;
     
     // Genres

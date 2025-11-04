@@ -69,7 +69,7 @@ const MovieDetails = () => {
   //  SUCCESS – render the page
   // -------------------------------------------------
   return (
-    <div className="movie-details-page">
+    <div className="movie-details-page py-14">
       <main>
         {/* Pass the *real* movie object to your reusable component */}
         <MovieInfo movie={movie} />
@@ -78,7 +78,10 @@ const MovieDetails = () => {
           <h2>Reviews</h2>
           <ReviewForm movieId={movie.movieId} />
           {/* Uncomment when you have a list endpoint */}
-          <ReviewsList movie={movie} />
+          <ReviewsList movie={movie} /> 
+
+          
+
         </section>
       </main>
     </div>
