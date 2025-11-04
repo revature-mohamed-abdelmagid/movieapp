@@ -95,6 +95,7 @@ public class MovieService {
                 movie.getCountry(),
                 movie.getPosterUrl(),
                 movie.getAvgRating(),
+                movie.getTrailerUrl(),
                 genreNames
         );
     }
@@ -119,6 +120,7 @@ public class MovieService {
         existingMovie.setCountry(movie.getCountry());
         existingMovie.setPosterUrl(movie.getPosterUrl());
         existingMovie.setAvgRating(movie.getAvgRating());
+        existingMovie.setTrailerUrl(movie.getTrailerUrl());
         return movieRepository.save(existingMovie);
     }
 
@@ -255,6 +257,7 @@ public class MovieService {
                 .producers(producers)
                 .writers(writers)
                 .reviews(reviewDTOs)
+                .trailerUrl(movie.getTrailerUrl())
                 .build();
     }
 

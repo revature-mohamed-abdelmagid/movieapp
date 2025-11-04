@@ -26,7 +26,7 @@ const Navbar = () => {
       {/* <input type="text" placeholder="Search movies..." className="search-input" /> */}
       
       <div className="nav-links">
-        <a href="#browse">Browse Movies</a>
+        {/* <Link to="/movies" className="nav-link">Browse Movies</Link> */}
         
         {isAuthenticated ? (
           <div className="user-menu">

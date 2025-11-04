@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaStar, FaCalendar, FaClock, FaExclamationTriangle } from 'react-icons/fa';
+import { FaStar, FaCalendar, FaExclamationTriangle } from 'react-icons/fa';
 import { movieAPI } from '../../services/api.js';
+import MovieCard from './MovieCard';
 import '../styles/FeaturedMovies.css';
 
 const FeaturedMovies = () => {
@@ -33,86 +34,13 @@ const FeaturedMovies = () => {
         }
     };
 
-    const getDisplayPoster = (movie) => {
-        // Use the movie's poster URL if available, otherwise use a placeholder
-        return movie.posterUrl || `https://via.placeholder.com/200x300/4a5568/ffffff?text=${encodeURIComponent(movie.title)}`;
-    };
-
-    const formatDuration = (minutes) => {
-        if (!minutes) return '';
-        const hours = Math.floor(minutes / 60);
-        const mins = minutes % 60;
-        return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
-    };
-
-    const handleImageError = (e, movie) => {
-        // Check if we've already tried the fallback to prevent infinite loop
-        if (e.target.dataset.fallbackAttempted === 'true') {
-            // If fallback already failed, remove the src to stop further requests
-            e.target.removeAttribute('src');
-            return;
-        }
-        
-        // Mark that we've attempted the fallback
-        e.target.dataset.fallbackAttempted = 'true';
-        // Set the placeholder image
-        e.target.src = `https://via.placeholder.com/200x300/4a5568/ffffff?text=${encodeURIComponent(movie.title)}`;
-    };
-
     const handleMovieClick = (movieId) => {
         navigate(`/movie/${movieId}`);
     };
 
-    const renderMovieCard = (movie) => (
-        <div 
-            key={movie.movieId} 
-            className='movie-card clickable' 
-            onClick={() => handleMovieClick(movie.movieId)}
-        >
-            <div className='movie-poster'>
-                <img 
-                    src={getDisplayPoster(movie)} 
-                    alt={movie.title}
-                    onError={(e) => handleImageError(e, movie)}
-                />
-            </div>
-            <div className='movie-info'>
-                <h4 className='movie-title'>{movie.title}</h4>
-                <div className='movie-details'>
-                    <span className='movie-year'>
-                        <FaCalendar className='icon' />
-                        {movie.releaseYear}
-                    </span>
-                    {movie.avgRating && (
-                    <div className='movie-rating'>
-                        <FaStar className='star-icon' />
-                        <span>{movie.avgRating.toFixed(1)}</span>
-                    </div>
-                )}
-                </div>
-                
-                {movie.description && (
-                    <p className='movie-description'>
-                        {movie.description.length > 100 
-                            ? `${movie.description.substring(0, 100)}...` 
-                            : movie.description
-                        }
-                    </p>
-                )}
-                
-                {console.log(movie)}
-                {movie.genres && movie.genres.length > 0 && (
-                    <div className='movie-genres'>
-                        {movie.genres.map((genre, index) => (
-                            <span key={index} className='genre-tag'>
-                                {genre}
-                            </span>
-                        ))}
-                    </div>
-                )}
-            </div>
-        </div>
-    );
+    const handleAllMovieClick = () => {
+        navigate('/movies');
+    }
 
     if (loading) {
         return (
@@ -149,18 +77,24 @@ const FeaturedMovies = () => {
         <section className='featured'>
             <div className='featured-header'>
                 <h2>Featured Movies</h2>
-                <a href="#view-all">View All ({movies.length})</a>
+
+                <a onClick={() => handleAllMovieClick()} className='cursor-pointer'>View All ({movies.length})</a>
             </div>
             
             {movies.length === 0 ? (
                 <div className='no-movies'>
-                    {console.log(movies)}
                     <p>No movies available at the moment.</p>
                     <p>Check back later for new releases!</p>
                 </div>
             ) : (
                 <div className='movie-grid'>
-                    {movies.map(renderMovieCard)}
+                    {movies.map((movie) => (
+                        <MovieCard 
+                            key={movie.movieId} 
+                            movie={movie} 
+                            onClick={() => handleMovieClick(movie.movieId)}
+                        />
+                    ))}
                 </div>
             )}
         </section>
