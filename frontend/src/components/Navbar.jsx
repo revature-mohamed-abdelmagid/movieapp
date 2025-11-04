@@ -94,7 +94,7 @@ const Navbar = () => {
 
             {showDropdown && (
               <div
-                className="dropdown-menu mt-2 rounded bg-gray-800"
+                className="dropdown-menu mt-2 rounded bg-transparent"
                 style={{
                   position: "absolute",
                   top: "100%",
@@ -106,15 +106,15 @@ const Navbar = () => {
                 }}
               >
                 <button
-                  className="flex flex-row bg-[#ffd700] justify-center text-black items-center hover:bg-yellow-300 hover:text-black px-3 py-2 rounded w-full text-center"
+                  className="flex flex-row bg-black justify-center text-white border border-white hover:border-black items-center hover:bg-yellow-300 hover:text-black px-3 py-2 rounded w-full text-center"
                   onClick={handleSignOut}
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    border: "none",
+                    
                     cursor: "pointer",
                     width: "100%",
-                    justifyContent: "flex-start",
+                    justifyContent: "center",
                   }}
                 >
                   <FaSignOutAlt style={{ marginRight: "8px" }} />
