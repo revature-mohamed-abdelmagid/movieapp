@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // Configure axios base URL - adjust port as needed
-const API_BASE_URL = 'http://localhost:8080'; // Spring Boot runs on port 8080 (from application-local.properties)
+// const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = 'http://ec2-54-197-202-248.compute-1.amazonaws.com:8080'; // Spring Boot runs on port 8080 (from application-local.properties)
 
 const api = axios.create({
   baseURL: API_BASE_URL,
