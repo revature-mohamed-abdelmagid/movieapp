@@ -26,8 +26,8 @@ public class Watchlist {
  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "watchlist_id")
     private Long watchlistId;
+
  
     @Column(name = "user_id", nullable = false)
     private Long userId;
