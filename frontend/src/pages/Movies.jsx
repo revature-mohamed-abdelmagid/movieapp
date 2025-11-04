@@ -77,7 +77,7 @@ const Movies = () => {
       
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-10">Browse Movies</h1>
+          <h1 className="text-4xl font-bold mb-6 text-left">Browse Movies</h1>
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input

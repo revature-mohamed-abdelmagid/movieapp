@@ -10,6 +10,8 @@ import MovieDetails from './pages/MovieDetails';
 import AddMovie from './pages/AddMovie';
 import Movies from './pages/Movies';
 import './styles/App.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -17,7 +19,9 @@ function App() {
       <Router>
         <div className="App">
           <Navbar />
+          
           <Routes>
+            
             <Route path="/" element={<Home />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
@@ -27,6 +31,8 @@ function App() {
           </Routes>
         </div>
       </Router>
+            <ToastContainer position="top-center" autoClose={3000} />
+
     </AuthProvider>
   );
 }
