@@ -23,7 +23,7 @@ const Hero = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.8 }}
       >
-        Welcome to <span className="highlight">CineVerse</span>
+        Welcome to <span className="highlight"><span className="text-white" >Cine</span><span className="text-yellow-300">Verse</span></span>
       </motion.h1>
 
       <motion.p
@@ -31,7 +31,7 @@ const Hero = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.8 }}
       >
-        Discover, review, and curate your favorite movies all in one place
+        Discover, review, and watch the Trailers all in one place
       </motion.p>
 
       <motion.button

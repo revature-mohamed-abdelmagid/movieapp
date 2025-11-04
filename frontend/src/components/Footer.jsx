@@ -9,7 +9,7 @@ const Footer = () => {
         {/* Logo and Name */}
         <div className="flex items-center gap-2">
           <FaFilm className="text-yellow-400 text-2xl" />
-          <h2 className="text-xl font-semibold text-white">CineVerse</h2>
+          <h2 className="text-xl font-semibold text-white"><span className="text-white">Cine</span><span className="text-yellow-300">Verse</span></h2>
         </div>
 
         {/* Navigation Links */}
@@ -28,7 +28,7 @@ const Footer = () => {
 
       {/* Copyright */}
       <div className="text-center text-gray-500 text-sm mt-4">
-        © {new Date().getFullYear()} <span className="text-yellow-400">CineVerse</span>.  
+        © {new Date().getFullYear()}<span> <span className="text-white">Cine</span><span className="text-yellow-300">Verse</span></span>.
         All rights reserved.
       </div>
     </footer>

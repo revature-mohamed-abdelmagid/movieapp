@@ -65,7 +65,7 @@ const Navbar = () => {
     <nav className="navbar">
       <Link to="/" className="navbar-logo">
         <FaFilm className="logo-icon" />
-        <span>CineVerse</span>
+        <span className="text-white">Cine<span className="text-yellow-300">Verse</span></span>
       </Link>
 
       <div className="nav-links">
