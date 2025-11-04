@@ -12,6 +12,7 @@ import Movies from './pages/Movies';
 import './styles/App.css';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -28,9 +29,11 @@ function App() {
             <Route path="/movie/:id" element={<MovieDetails />} />
             <Route path="/add-movie" element={<AddMovie />} />
             <Route path="/movies" element={<Movies />} />
+
           </Routes>
         </div>
       </Router>
+      <Footer />
             <ToastContainer position="top-center" autoClose={3000} />
 
     </AuthProvider>
