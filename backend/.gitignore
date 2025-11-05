@@ -35,3 +35,6 @@ build/
 ### local app config
 application-local.properties
 .vscode/settings.json
+
+# Ignore environment and secrets
+application-prod.properties
