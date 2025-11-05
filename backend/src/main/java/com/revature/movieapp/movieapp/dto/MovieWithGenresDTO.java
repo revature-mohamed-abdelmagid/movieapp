@@ -24,5 +24,6 @@ public class MovieWithGenresDTO {
     private String country;
     private String posterUrl;
     private Double avgRating;
+    private String trailerUrl;
     private List<String> genres; // List of genre names
 }

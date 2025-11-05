@@ -65,10 +65,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173")); // React dev server ports
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173", "http://cineverse-frontend-bucket.s3-website.us-east-2.amazonaws.com")); // React dev server ports
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -100,15 +101,25 @@ public class SecurityConfig {
                 // PUBLIC ENDPOINTS - Anyone can access these without authentication
                 .requestMatchers("/api/auth/**").permitAll() // Registration, login, logout
                 .requestMatchers(HttpMethod.GET, "/movies/**").permitAll() // Anyone can view movies
+                .requestMatchers(HttpMethod.GET, "/api/persons/**").permitAll() // Anyone can view persons
+                .requestMatchers(HttpMethod.GET, "/api/roles/**").permitAll() // Anyone can view roles
                 
                 // ADMIN ONLY ENDPOINTS - Only users with ROLE_ADMIN can access
-                .requestMatchers(HttpMethod.DELETE, "/movies/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/movies/**").hasRole("ADMIN") // Create movies - admin only
+                .requestMatchers(HttpMethod.PUT, "/movies/**").hasRole("ADMIN") // Update movies - admin only
+                .requestMatchers(HttpMethod.DELETE, "/movies/**").hasRole("ADMIN") // Delete movies - admin only
+                .requestMatchers(HttpMethod.POST, "/api/persons/**").hasRole("ADMIN") // Create persons - admin only
+                .requestMatchers(HttpMethod.PUT, "/api/persons/**").hasRole("ADMIN") // Update persons - admin only
+                .requestMatchers(HttpMethod.DELETE, "/api/persons/**").hasRole("ADMIN") // Delete persons - admin only
                 .requestMatchers("/api/users/**").hasRole("ADMIN") // Only admins can manage users
                 
-                // AUTHENTICATED ENDPOINTS - Any logged-in user can access
-                .requestMatchers(HttpMethod.POST, "/movies/**").authenticated() // Create movies
-                .requestMatchers(HttpMethod.PUT, "/movies/**").authenticated() // Update movies
-                
+                // Reviews endpoints permit all for viewing, authenticated for creating/updating/deleting
+                .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll() // View reviews
+                .requestMatchers(HttpMethod.POST, "/api/reviews/**").authenticated() // Create reviews
+                .requestMatchers(HttpMethod.PUT, "/api/reviews/**").authenticated() // Update reviews
+                .requestMatchers(HttpMethod.PATCH, "/api/reviews/**").authenticated() // Patch reviews
+                .requestMatchers(HttpMethod.DELETE, "/api/reviews/**").authenticated() // Delete reviews
+
                 // ALL OTHER ENDPOINTS - Require authentication
                 .anyRequest().authenticated()
             )

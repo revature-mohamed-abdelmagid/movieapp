@@ -1,26 +1,42 @@
 // src/App.jsx
 import React from 'react';
-import MovieList from './components/MovieList';
-import MovieCard from './components/MovieCard';
-import FeaturedMovies from './components/FeaturedMovies';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
+import Home from './components/Home';
+import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
+import MovieDetails from './pages/MovieDetails';
+import AddMovie from './pages/AddMovie';
+import Movies from './pages/Movies';
 import './styles/App.css';
-import Hero from './components/Hero';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="App">
-      <div className="hero-wrapper">
-      <div className="container">
-      <Navbar />
-        <Hero />
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Navbar />
+          
+          <Routes>
+            
+            <Route path="/" element={<Home />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/movie/:id" element={<MovieDetails />} />
+            <Route path="/add-movie" element={<AddMovie />} />
+            <Route path="/movies" element={<Movies />} />
+
+          </Routes>
         </div>
-        </div>
-        <div className="container">
-        <FeaturedMovies />
-        </div>
-    </div>
-    
+      </Router>
+      <Footer />
+            <ToastContainer position="top-center" autoClose={3000} />
+
+    </AuthProvider>
   );
 }
 

@@ -10,7 +10,7 @@
   width: 100vw; /* Full viewport width */
   margin-left: calc(-50vw + 50%); /* Centers the full-width background */
   background-color: #1e1e1e;
-  background-image: url('../assets/hero-bg.jpeg');
+  background-image: url('../assets/hero-bg1.jpeg');
   background-position: center;
   background-size: cover;
   position: relative; /* For layering */

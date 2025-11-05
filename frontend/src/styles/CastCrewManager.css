@@ -1,0 +1,400 @@
+/* src/styles/CastCrewManager.css */
+
+.cast-crew-manager {
+  background-color: #2a2a2a;
+  border-radius: 4px;
+  padding: 20px;
+  border: 1px solid #444;
+}
+
+.cast-crew-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.cast-crew-header h3 {
+  color: #ffd700;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.btn-add-member {
+  background-color: #ffd700;
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-add-member:hover {
+  background-color: #ffed4e;
+  transform: translateY(-1px);
+}
+
+/* Add Cast Form */
+.add-cast-form {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border: 1px solid #333;
+}
+
+.add-cast-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.search-input,
+.role-select,
+.character-input {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.search-input:focus,
+.role-select:focus,
+.character-input:focus {
+  outline: none;
+  border-color: #ffd700;
+}
+
+/* Search Results Dropdown */
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.form-group {
+  position: relative;
+}
+
+.search-result-item {
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #333;
+  transition: background-color 0.2s;
+}
+
+.search-result-item:hover {
+  background-color: #2a2a2a;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.person-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.person-info strong {
+  color: #fff;
+}
+
+.person-info span {
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.no-results {
+  padding: 12px;
+  text-align: center;
+}
+
+.no-results small {
+  display: block;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.btn-create-person {
+  background-color: #333;
+  color: #ffd700;
+  border: 1px solid #555;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.btn-create-person:hover {
+  background-color: #444;
+  border-color: #ffd700;
+}
+
+.btn-confirm-add {
+  background-color: #ffd700;
+  color: #000;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-confirm-add:hover:not(:disabled) {
+  background-color: #ffed4e;
+  transform: translateY(-1px);
+}
+
+.btn-confirm-add:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Create Person Modal */
+.create-person-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  border: 1px solid #333;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.modal-header h4 {
+  color: #ffd700;
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.btn-close:hover {
+  color: #fff;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-body .form-group {
+  margin-bottom: 15px;
+}
+
+.modal-body label {
+  display: block;
+  color: #fff;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.modal-body input,
+.modal-body textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.95rem;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.modal-body input:focus,
+.modal-body textarea:focus {
+  outline: none;
+  border-color: #ffd700;
+}
+
+.modal-body textarea {
+  resize: vertical;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 20px;
+  border-top: 1px solid #333;
+}
+
+.modal-footer .btn-cancel {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.modal-footer .btn-cancel:hover {
+  background-color: #444;
+}
+
+.modal-footer .btn-create {
+  background-color: #ffd700;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.modal-footer .btn-create:hover {
+  background-color: #ffed4e;
+}
+
+/* Cast/Crew List */
+.cast-crew-list {
+  margin-top: 20px;
+}
+
+.cast-crew-list h4 {
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.cast-crew-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cast-crew-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e1e1e;
+  padding: 12px 16px;
+  border-radius: 4px;
+  border: 1px solid #333;
+}
+
+.member-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.member-info strong {
+  color: #fff;
+}
+
+.role-badge {
+  background-color: #333;
+  color: #ffd700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.character-name {
+  color: #999;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.btn-remove {
+  background-color: #ff4444;
+  color: #fff;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-remove:hover {
+  background-color: #ff6666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .add-cast-form .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cast-crew-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .btn-add-member {
+    width: 100%;
+  }
+
+  .member-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+

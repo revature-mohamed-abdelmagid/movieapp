@@ -123,6 +123,7 @@ public class AuthController {
             // Return JWT token and user info
             JwtResponse response = new JwtResponse(
                 jwt,
+                user.getId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getRoles()
