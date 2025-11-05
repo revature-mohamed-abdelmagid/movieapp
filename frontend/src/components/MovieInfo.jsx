@@ -1,92 +1,146 @@
-import React from "react";
-import { FaPlay, FaHeart, FaArrowLeft, FaStar, FaCalendar, FaCalendarDay } from "react-icons/fa"; // For icons
+import React, { useState } from "react";
+import {
+  FaPlay,
+  FaHeart,
+  FaArrowLeft,
+  FaStar,
+} from "react-icons/fa";
 import { formatDuration } from "../utils/formatDuration.js";
 import { TrailerPlayer } from "./TrailerPlayer.jsx";
-import { useState } from "react";
-
 
 const MovieInfo = ({ movie }) => {
-
-    
-    const [trailerOpen, setTrailerOpen] = useState(false);
-
-
-    console.log('Movie data received in MovieInfo component:', movie);
+  const [trailerOpen, setTrailerOpen] = useState(false);
 
   return (
     <>
-    <div className="movie-info">
-      <div className=" main-content flex min-h-screen flex-col items-start justify-center p-4 md:flex-row md:p-8 lg:p-12  ">
-        <div className="poster">
-          <img src={movie.posterUrl} alt={movie.title} />
-        </div>
-       
-        <div className="details flex flex-col gap-8 items-start">
-           <button onClick={() => window.history.back()}
-          className="
-            px-3 py-1 
-            flex flex-row justify-center items-center gap-2 
-            rounded 
-            bg-transparent text-white 
-            hover:bg-yellow-500 hover:text-black
-            transition duration-200
-            cursor-pointer
-          "
-        >
-          <FaArrowLeft /> Back
-        </button>
-          <h1 className="text-3xl font-bold">{movie.title}</h1>
-          <div className="flex flex-row gap-6 items-center">
-              {movie.releaseYear}  <span>  • </span> <div> <span className="inline-block flex flex-row justify-center text-yellow-300 text-md "> <FaStar className="pt-1" /></span> {movie.avgRating == 0 ? 'N/A' : movie.avgRating} </div>  <span> • </span> {formatDuration(movie.duration)}
+      <div className="movie-info bg-black text-white min-h-screen w-full overflow-hidden">
+        {/* Main container */}
+          <div className="max-w-[1460px] mx-auto px-4 ">
 
+        <div className="main-content flex flex-col md:flex-row items-center md:items-start justify-center gap-8 p-4 md:p-8 lg:p-12">
+          
+          {/* Movie Poster */}
+          <div className="poster w-full md:w-1/3 flex justify-center">
+            <img
+              src={movie.posterUrl}
+              alt={movie.title}
+              className="rounded-lg shadow-lg w-full max-w-sm md:max-w-full object-cover"
+            />
           </div>
-          <div className="genres flex flex-row gap-3">
-          {movie.genres.map((genre, index) => (
-          <p className="inline-block rounded bg-gray-800 px-2 py-1">{genre.name}</p>
-          ))}
-          </div>
-          <div className="buttons flex flex-row gap-4">
-            <button className="play flex flex-row justify-center items-center gap-2 rounded px-4 py-2"
-              onClick={() => setTrailerOpen(true)}
+
+          {/* Details Section */}
+          <div className="details flex flex-col gap-6 md:gap-8 items-start w-full md:w-2/3">
+            {/* Back Button */}
+            {/* <button
+              onClick={() => window.history.back()}
+              className="px-2 py-1  text-sm flex flex-row items-center gap-2 rounded bg-transparent text-white border border-gray-700 hover:bg-[#ffd700] hover:text-black transition duration-200 cursor-pointer"
             >
-              <FaPlay className="h-5 w-5" />
-              Play Trailer
-            </button>
-            <button className=" bg-black hover:bg-yellow-500 flex cursor-pointer hover:text-black border border-gray-700 flex-row justify-center items-center gap-2 rounded px-4 py-2">
-              <FaHeart /> Add to Favorites
-            </button>
-          </div>
-          <div>
-            <h2 className="text-xl ">Plot</h2>
-            <p className="plot max-w-3xl">{movie.description}</p>
-          </div>
-          <div className="director flex flex-col items-start gap-3">
-            <h3 className="text-xl">Director</h3>
-            <div className="person flex flex-col items-start  text-gray-200">
-              {movie.directors.map((director, index) => (
-                <div key={index} className="person flex flex-col items-start ">
-                  <img src={director.profileUrl} alt={director.name} />
-                  <span>{director.name}</span>
-                </div>
+              <FaArrowLeft className="text-xs" /> Back
+            </button> */}
+
+            {/* Title */}
+            <h1 className="text-2xl md:text-4xl font-bold leading-tight">
+              {movie.title}
+            </h1>
+
+            {/* Rating & Info Row */}
+            <div className="flex flex-wrap items-center gap-3 text-gray-300 text-sm md:text-base">
+              <span>{movie.releaseYear}</span>
+              <span>•</span>
+              <span className="flex flex-row items-center gap-1 text-yellow-300">
+                <FaStar />
+                {movie.avgRating == 0 ? "N/A" : movie.avgRating}
+              </span>
+              <span>•</span>
+              <span>{formatDuration(movie.duration)}</span>
+            </div>
+
+            {/* Genres */}
+            <div className="genres flex flex-wrap gap-2">
+              {movie.genres.map((genre, index) => (
+                <p
+                  key={index}
+                  className="inline-block rounded bg-gray-700 px-2 py-1 text-sm "
+                >
+                  {genre.name}
+                </p>
               ))}
             </div>
-          </div>
-          <div className="cast flex flex-col items-start gap-3">
-            <h3 className="text-xl">Cast</h3>
-            <div className="cast-list flex flex-row gap-6 overflow-x-auto text-gray-200">
-              {movie.cast.map((actor, index) => (
-                <div key={index} className="person flex flex-col items-start justify-start gap-2 min-w-[80px]">
-  <img src={actor.profileUrl} alt={actor.name} className="w-full h-auto object-cover" />
-  <span className="text-left">{actor.name}</span>
-</div>
-              ))}
+
+            {/* Buttons */}
+            <div className="buttons flex flex-wrap gap-3">
+              <button
+                className="flex flex-row items-center gap-2 bg-[#ffd700] hover:bg-[#ffed4e] text-black font-semibold rounded px-4 py-2 transition duration-200 cursor-pointer"
+                onClick={() => setTrailerOpen(true)}
+              >
+                <FaPlay /> Play Trailer
+              </button>
+
+              <button className="bg-transparent hover:bg-[#ffd700] hover:text-black border border-gray-700 flex flex-row items-center gap-2 rounded px-4 py-2 transition duration-200 cursor-pointer">
+                <FaHeart /> Add to Favorites
+              </button>
+            </div>
+
+            {/* Plot */}
+            <div className="w-full">
+              <h2 className="text-xl font-semibold mb-2">Plot</h2>
+              <p className="plot max-w-3xl text-gray-400 leading-relaxed">
+                {movie.description}
+              </p>
+            </div>
+
+            {/* Director */}
+            <div className="director w-full">
+              <h3 className="text-xl font-semibold mb-2">Director</h3>
+              <div className="flex flex-wrap gap-4">
+                {movie.directors.map((director, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center text-gray-200"
+                  >
+                    <img
+                      src={director.profileUrl}
+                      alt={director.name}
+                      className="w-16 h-16 object-cover rounded-full border border-gray-700"
+                    />
+                    <span className="mt-2 text-xs">{director.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Cast */}
+            <div className="cast w-full">
+              <h3 className="text-xl font-semibold mb-2">Cast</h3>
+              <div className="flex flex-row gap-4 overflow-x-auto pb-2">
+                {movie.cast.map((actor, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center min-w-[80px] text-gray-200"
+                  >
+                    <img
+                      src={actor.profileUrl}
+                      alt={actor.name}
+                      className="w-16 h-16 object-cover rounded-full border border-gray-700"
+                    />
+                    <span className="mt-1 text-xs text-center">
+                      {actor.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      
-    </div>
-    <TrailerPlayer movie={movie} open={trailerOpen} onOpenChange={setTrailerOpen} />
+
+      </div>
+      {/* Trailer Modal */}
+      <TrailerPlayer
+        movie={movie}
+        open={trailerOpen}
+        onOpenChange={setTrailerOpen}
+      />
     </>
   );
 };

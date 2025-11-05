@@ -75,7 +75,7 @@ const MovieDetails = () => {
   //  SUCCESS – render the page
   // -------------------------------------------------
   return (
-    <div className="movie-details-page py-14">
+    <div className="movie-details-page">
       <main>
         {/* Pass the *real* movie object to your reusable component */}
         <MovieInfo movie={movie} />
