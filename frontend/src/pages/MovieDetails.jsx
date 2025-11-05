@@ -86,8 +86,10 @@ const MovieDetails = () => {
             movieId={movie.movieId} 
             onReviewSubmitted={handleReviewSubmitted}
           />
-          <ReviewsList movie={movie} />
-
+          <ReviewsList 
+            movie={movie} 
+            onReviewUpdated={handleReviewSubmitted}
+          />
         </section>
       </main>
     </div>

@@ -85,8 +85,8 @@ const ReviewForm = ({ movieId, onReviewSubmitted }) => {
 
   if (!isAuthenticated) {
     return (
-      <div className="review-form p-4 bg-gray-800 rounded">
-        <p className="text-gray-400">Please sign in to write a review</p>
+      <div className="review-form">
+        <p style={{ color: '#999', textAlign: 'center' }}>Please sign in to write a review</p>
       </div>
     );
   }
@@ -96,33 +96,32 @@ const ReviewForm = ({ movieId, onReviewSubmitted }) => {
       <h3>Write a Review</h3>
       
       {error && (
-        <div className="error-message bg-red-900 text-red-200 p-3 rounded mb-4">
+        <div className="error-message">
           {error}
         </div>
       )}
       
       {success && (
-        <div className="success-message bg-green-900 text-green-200 p-3 rounded mb-4">
+        <div className="success-message">
           Review submitted successfully!
         </div>
       )}
 
-      <div className="rating mb-4 mt-4">
-        Your Rating
+      <div className="rating">
+        <span>Your Rating:</span>
         {[...Array(5)].map((_, index) => (
           <FaStar
             key={index}
             className="star"
-            color={index < rating ? '#ffc107' : '#e4e5e9'}
+            color={index < rating ? '#ffd700' : '#333'}
             onClick={() => setRating(index + 1)}
             style={{ cursor: 'pointer' }}
           />
         ))}
-        {rating > 0 && <span className="ml-2 text-gray-400">({rating} star{rating > 1 ? 's' : ''})</span>}
+        {rating > 0 && <span style={{ color: '#999' }}>({rating} star{rating > 1 ? 's' : ''})</span>}
       </div>
       
       <textarea
-        className="w-full h-20 bg-[#333] text-white border-none p-2 rounded mb-4 placeholder-gray-500"
         placeholder="Share your thoughts about this movie..."
         value={reviewText}
         onChange={(e) => setReviewText(e.target.value)}
@@ -131,8 +130,7 @@ const ReviewForm = ({ movieId, onReviewSubmitted }) => {
       />
       
       <button 
-        type="submit" 
-        className="bg-[#ffc107] text-black border-none py-2 px-4 cursor-pointer rounded font-semibold"
+        type="submit"
         disabled={loading}
       >
         {loading ? 'Submitting...' : 'Submit Review'}

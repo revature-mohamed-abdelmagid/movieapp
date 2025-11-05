@@ -5,11 +5,9 @@ import com.revature.movieapp.movieapp.model.User;
 import com.revature.movieapp.movieapp.repository.MovieRepository;
 import com.revature.movieapp.movieapp.repository.ReviewRepository;
 import com.revature.movieapp.movieapp.repository.UserRepository;
-import com.revature.movieapp.movieapp.service.ReviewService.ResourceNotFoundException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -186,5 +184,18 @@ public class ReviewService {
 
         existing.setUpdatedAt(LocalDateTime.now());
         return Optional.of(reviewRepository.save(existing));
+    }
+
+    /**
+     * Check if a user (by username) owns a specific review
+     */
+    public boolean isReviewOwner(Long reviewId, String username) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Review not found with id: " + reviewId));
+        
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+        
+        return review.getUserId().equals(user.getId());
     }
 }

@@ -16,6 +16,7 @@ import com.revature.movieapp.movieapp.dto.MovieFullDetailsDTO;
 import com.revature.movieapp.movieapp.dto.MovieWithGenresDTO;
 import com.revature.movieapp.movieapp.model.Movie;
 import com.revature.movieapp.movieapp.service.MovieService;
+import com.revature.movieapp.movieapp.service.GenreService;
 
 import jakarta.validation.Valid;
 
@@ -25,8 +26,11 @@ import jakarta.validation.Valid;
 public class MovieController {
     
 private final MovieService movieService;
-    public MovieController(MovieService movieService) {
+private final GenreService genreService;
+    
+    public MovieController(MovieService movieService, GenreService genreService) {
         this.movieService = movieService;
+        this.genreService = genreService;
     }
     
 
@@ -88,6 +92,17 @@ private final MovieService movieService;
             return ResponseEntity.ok(moviesDetails);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    // Add genres to a movie
+    @PostMapping("/movies/{id}/genres")
+    public ResponseEntity<String> addGenresToMovie(@PathVariable Long id, @RequestBody List<Long> genreIds) {
+        try {
+            genreService.addGenresToMovie(id, genreIds);
+            return ResponseEntity.ok("Genres added successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

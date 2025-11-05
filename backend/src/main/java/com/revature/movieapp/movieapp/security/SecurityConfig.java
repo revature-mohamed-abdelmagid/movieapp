@@ -66,9 +66,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173", "http://cineverse-frontend-bucket.s3-website.us-east-2.amazonaws.com")); // React dev server ports
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -116,6 +117,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll() // View reviews
                 .requestMatchers(HttpMethod.POST, "/api/reviews/**").authenticated() // Create reviews
                 .requestMatchers(HttpMethod.PUT, "/api/reviews/**").authenticated() // Update reviews
+                .requestMatchers(HttpMethod.PATCH, "/api/reviews/**").authenticated() // Patch reviews
                 .requestMatchers(HttpMethod.DELETE, "/api/reviews/**").authenticated() // Delete reviews
 
                 // ALL OTHER ENDPOINTS - Require authentication

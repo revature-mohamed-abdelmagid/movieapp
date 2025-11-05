@@ -1,7 +1,7 @@
 // src/pages/AddMovie.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { movieAPI, movieCastAPI } from '../../services/api';
+import { movieAPI, movieCastAPI, genreAPI } from '../../services/api';
 import { useAuth } from '../context/AuthContext';
 import CastCrewManager from '../components/CastCrewManager';
 import '../styles/AddMovie.css';
@@ -20,11 +20,16 @@ const AddMovie = () => {
     description: '',
     language: '',
     country: '',
-    posterUrl: ''
+    posterUrl: '',
+    trailerUrl: ''
   });
 
   // Cast and crew state
   const [castCrew, setCastCrew] = useState([]);
+  
+  // Genres state
+  const [availableGenres, setAvailableGenres] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState([]);
 
   // Check if user is admin
   const isAdmin = user?.roles?.includes('ROLE_ADMIN');
@@ -36,12 +41,38 @@ const AddMovie = () => {
     }
   }, [isAdmin, navigate]);
 
+  // Fetch available genres
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const response = await genreAPI.getAllGenres();
+        setAvailableGenres(response.data);
+      } catch (err) {
+        console.error('Failed to fetch genres:', err);
+      }
+    };
+    
+    if (isAdmin) {
+      fetchGenres();
+    }
+  }, [isAdmin]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleGenreToggle = (genreId) => {
+    setSelectedGenres(prev => {
+      if (prev.includes(genreId)) {
+        return prev.filter(id => id !== genreId);
+      } else {
+        return [...prev, genreId];
+      }
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -60,6 +91,7 @@ const AddMovie = () => {
         language: formData.language.trim() || null,
         country: formData.country.trim() || null,
         posterUrl: formData.posterUrl.trim() || null,
+        trailerUrl: formData.trailerUrl.trim() || null,
         avgRating: 0.0 // Default rating for new movies
       };
 
@@ -67,7 +99,12 @@ const AddMovie = () => {
       const movieResponse = await movieAPI.createMovie(movieData);
       const createdMovieId = movieResponse.data.movieId;
 
-      // Step 2: Add cast and crew if any
+      // Step 2: Add genres if any selected
+      if (selectedGenres.length > 0) {
+        await movieAPI.addGenresToMovie(createdMovieId, selectedGenres);
+      }
+
+      // Step 3: Add cast and crew if any
       if (castCrew.length > 0) {
         const castCrewData = castCrew.map(member => ({
           personId: member.personId,
@@ -88,9 +125,11 @@ const AddMovie = () => {
         description: '',
         language: '',
         country: '',
-        posterUrl: ''
+        posterUrl: '',
+        trailerUrl: ''
       });
       setCastCrew([]);
+      setSelectedGenres([]);
 
       // Redirect to home after 2 seconds
       setTimeout(() => {
@@ -245,6 +284,22 @@ const AddMovie = () => {
           </div>
 
           <div className="form-group">
+            <label htmlFor="trailerUrl">
+              Trailer URL
+            </label>
+            <input
+              type="url"
+              id="trailerUrl"
+              name="trailerUrl"
+              value={formData.trailerUrl}
+              onChange={handleChange}
+              placeholder="https://www.youtube.com/watch?v=..."
+              disabled={loading}
+            />
+            <small>YouTube or other video URL for the movie trailer</small>
+          </div>
+
+          <div className="form-group">
             <label htmlFor="description">
               Description
             </label>
@@ -259,6 +314,25 @@ const AddMovie = () => {
               disabled={loading}
             />
             <small>Maximum 1000 characters</small>
+          </div>
+
+          {/* Genres Section */}
+          <div className="form-group">
+            <label>Genres</label>
+            <div className="genres-grid">
+              {availableGenres.map(genre => (
+                <label key={genre.genreId} className="genre-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={selectedGenres.includes(genre.genreId)}
+                    onChange={() => handleGenreToggle(genre.genreId)}
+                    disabled={loading}
+                  />
+                  <span>{genre.genreName}</span>
+                </label>
+              ))}
+            </div>
+            <small>Select one or more genres that apply to this movie</small>
           </div>
 
           {/* Cast & Crew Section */}

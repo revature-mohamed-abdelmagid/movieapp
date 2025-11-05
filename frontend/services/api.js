@@ -64,6 +64,9 @@ export const movieAPI = {
   createMovie: (movieData) => api.post('/movies', movieData),
   updateMovie: (id, movieData) => api.put(`/movies/${id}`, movieData),
   deleteMovie: (id) => api.delete(`/movies/${id}`),
+  
+  // Add genres to movie
+  addGenresToMovie: (movieId, genreIds) => api.post(`/movies/${movieId}/genres`, genreIds),
 };
 
 // Auth API calls
@@ -108,6 +111,11 @@ export const movieCastAPI = {
 // Movie Role API calls
 export const roleAPI = {
   getAllRoles: () => api.get('/api/roles'),
+};
+
+// Genre API calls
+export const genreAPI = {
+  getAllGenres: () => api.get('/api/genres'),
 };
 
 export default api;
