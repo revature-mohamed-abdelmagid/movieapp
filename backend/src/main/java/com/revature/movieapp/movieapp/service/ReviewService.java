@@ -152,8 +152,16 @@ public class ReviewService {
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Movie not found with id: " + review.getMovieId()));
             // Adjust average rating - simplistic approach update the average rating by removing this review's rating
-            movie.setAvgRating((movie.getAvgRating() * reviewRepository.findByMovieId(movie.getMovieId()).size() - review.getRating())
-                    / (reviewRepository.findByMovieId(movie.getMovieId()).size() - 1));
+            if((movie.getAvgRating() * reviewRepository.findByMovieId(movie.getMovieId()).size() - review.getRating()) <= 0){
+                movie.setAvgRating(0.0);
+            }
+            else {
+                movie.setAvgRating((movie.getAvgRating() * reviewRepository.findByMovieId(movie.getMovieId()).size()
+                        - review.getRating())
+                        / (reviewRepository.findByMovieId(movie.getMovieId()).size() - 1));
+            }
+            
+            
 
         }
     
