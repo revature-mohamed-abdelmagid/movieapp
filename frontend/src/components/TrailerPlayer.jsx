@@ -43,7 +43,7 @@ export const TrailerPlayer = ({ movie, open, onOpenChange }) => {
               <span>•</span>
               <div className="flex items-center gap-1">
                 <FaStar className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <span>{movie.avgRating}</span>
+                <span>{movie.avgRating.toFixed(1)}</span>
               </div>
               <span>•</span>
               <div className="flex items-center gap-1">

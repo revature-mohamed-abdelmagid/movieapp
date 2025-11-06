@@ -49,7 +49,7 @@ const MovieInfo = ({ movie }) => {
               <span>•</span>
               <span className="flex flex-row items-center gap-1 text-yellow-300">
                 <FaStar />
-                {movie.avgRating == 0 ? "N/A" : movie.avgRating}
+                {movie.avgRating == 0 ? "N/A" : movie.avgRating.toFixed(1)}
               </span>
               <span>•</span>
               <span>{formatDuration(movie.duration)}</span>
