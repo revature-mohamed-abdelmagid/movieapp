@@ -48,7 +48,13 @@ public class ReviewService {
             Movie movie = movieRepository.findById(review.getMovieId())
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Movie not found with id: " + review.getMovieId()));
-            movie.setAvgRating((movie.getAvgRating() + review.getRating())/2); // dummy operation to attach entity
+
+            if (movie.getAvgRating() == 0) {
+                movie.setAvgRating(Double.valueOf(review.getRating()));
+            } else {
+                movie.setAvgRating((movie.getAvgRating() + Double.valueOf(review.getRating()))/2);
+            }
+            
             review.setMovieId(movie.getMovieId());
         }
 
